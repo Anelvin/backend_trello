@@ -4,6 +4,7 @@ const app = express();
 //Importing routes
 
 //Calling database
+require('./database/sequelize');
 
 //Setting
 app.set('port', process.env.PORT || 3001);
