@@ -16,6 +16,8 @@ module.exports = (sequelize, type) => {
     },{
         timestamps: true
     });
-   
+    TaskList.associate = (models) => {
+        TaskList.hasMany(models.task, {onDelete: 'cascade'})
+    }
     return TaskList;
 }
