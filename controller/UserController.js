@@ -20,12 +20,30 @@ UserController.create = async (req, res, next) => {
         name: req.body.name,
         password
     });
-    console.log(newUser);
-    let responseToken = token.generate(req.body);
+    let responseToken = token.generate(newUser);
     res.status(201).json({
         messaje: 'User created',
         responseToken
     });
+}
+
+UserController.signIn = async (req, res, next) => {
+    const user = await User.findOne({
+        where:{
+            name: req.body.name
+        }
+    });
+    if(user){
+        const authorized = await bcrypt.compare(req.body.password, user.password);
+        if(authorized){
+            let responseToken = token.generate(user);
+            res.status(200).json({
+                token: responseToken
+            });
+        }
+        res.status(401);
+    }
+    res.status(401);
 }
 
 module.exports = UserController;
