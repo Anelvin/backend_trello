@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 //Importing routes
+const userRoutes = require('./routes/user');
 
 //Calling database
 require('./database/sequelize');
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 //Routes
+app.use('/user', userRoutes);
 
 //Starting server
 app.listen(app.get('port'), () => {
