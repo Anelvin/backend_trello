@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
 //Importing routes
 const userRoutes = require('./routes/user');
