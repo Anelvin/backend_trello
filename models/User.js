@@ -10,5 +10,8 @@ module.exports = (sequelize, type) => {
     },{
         timestamps: true
     });
+    User.associate = (models) => {
+        User.hasMany(models.role_user, {onDelete: 'cascade'})
+    }
     return User;
 }
