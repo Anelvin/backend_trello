@@ -6,16 +6,13 @@ const token = require('../middleware/authentication');
 const UserController = {}
 
 UserController.getUsers = async (req, res, next) => {
-    const users = await User.findAll({
-        where: {
-            id: 3
-        }
-    });
-    res.status(200).json(users);
+    const users = await User.findAll();
+    return res.status(200).json(users);
+    return res.status(200).send('entras');
 }
 
 UserController.create = async (req, res, next) => {
-    const password = await bcrypt.hash(req.body.password, keys.salts_roounds);
+    const password = await bcrypt.hash(req.body.password, keys.salts_rounds);
     const newUser = await User.create({
         name: req.body.name,
         password
