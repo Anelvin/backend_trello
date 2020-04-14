@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const secretKey = require('../keys/index');
+import jwt from 'jsonwebtoken';
+import secretKey from '../keys/index';
 
 const token = {};
 
@@ -8,9 +8,10 @@ token.generate = function(user){
         username: user.name,
         password: user.password
     };
-    return newToken = jwt.sign(data, secretKey.secretKey, {
+    let newToken = jwt.sign(data, secretKey.secretKey, {
         expiresIn: 60*60*24
     });
+    return newToken;
 }
 
 token.verifyToken = function(req, res, next){
