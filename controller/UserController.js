@@ -1,14 +1,13 @@
-const bcrypt = require('bcrypt');
-const keys = require('../keys/index');
-const { User } = require('../database/sequelize');
-const token = require('../middleware/authentication');
+import bcrypt from 'bcrypt';
+import keys from '../keys/index';
+import { User } from '../database/sequelize';
+import token from '../middleware/authentication';
 
 const UserController = {}
 
 UserController.getUsers = async (req, res, next) => {
     const users = await User.findAll();
     return res.status(200).json(users);
-    return res.status(200).send('entras');
 }
 
 UserController.create = async (req, res, next) => {
@@ -19,7 +18,7 @@ UserController.create = async (req, res, next) => {
     });
     let responseToken = token.generate(newUser);
     res.status(201).json({
-        messaje: 'User created',
+        message: 'User created',
         responseToken
     });
 }

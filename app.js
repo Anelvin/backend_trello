@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
+import morgan from 'morgan';
 const app = express();
-const morgan = require('morgan');
 
 //Importing routes
-const userRoutes = require('./routes/user');
+import userRoutes from './routes/user';
 
 //Calling database
 require('./database/sequelize');
@@ -29,3 +29,5 @@ app.use('/user', userRoutes);
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);
 });
+
+export default app;

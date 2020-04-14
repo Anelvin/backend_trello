@@ -1,26 +1,26 @@
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 
 //Importing models
-const UserModel = require('../models/User');
-const TaskListModel = require('../models/TaskList');
-const BoardModel = require('../models/Board');
-const RoleModel = require('../models/Role');
-const RoleUserModel = require('../models/RoleUser');
-const TaskModel = require('../models/Task');
-const SubTaskModel = require('../models/SubTask');
-const ItemSubTaskModel = require('../models/ItemSubTask');
+import UserModel from '../models/User';
+import TaskListModel from '../models/TaskList';
+import BoardModel from '../models/Board';
+import RoleModel from '../models/Role';
+import RoleUserModel from '../models/RoleUser';
+import TaskModel from '../models/Task';
+import SubTaskModel from '../models/SubTask';
+import ItemSubTaskModel from '../models/ItemSubTask';
 
 const db_url = 'mysql://root@localhost:3306/trello';
 const sequelize = new Sequelize(db_url);
 
-const User = UserModel(sequelize, Sequelize);
-const TaskList = TaskListModel(sequelize, Sequelize); 
-const Board = BoardModel(sequelize, Sequelize);
-const Role = RoleModel(sequelize, Sequelize);
-const RoleUser = RoleUserModel(sequelize, Sequelize);
-const Task = TaskModel(sequelize, Sequelize);
-const SubTask = SubTaskModel(sequelize, Sequelize);
-const ItemSubTask = ItemSubTaskModel(sequelize, Sequelize);
+export const User = UserModel(sequelize, Sequelize);
+export const TaskList = TaskListModel(sequelize, Sequelize); 
+export const Board = BoardModel(sequelize, Sequelize);
+export const Role = RoleModel(sequelize, Sequelize);
+export const RoleUser = RoleUserModel(sequelize, Sequelize);
+export const Task = TaskModel(sequelize, Sequelize);
+export const SubTask = SubTaskModel(sequelize, Sequelize);
+export const ItemSubTask = ItemSubTaskModel(sequelize, Sequelize);
 
 sequelize.sync()
     .then(() => {
@@ -34,13 +34,3 @@ try {
     console.log('Unable to connect to the database:', error);
 }
     
-module.exports = {
-    User,
-    TaskList,
-    Board,
-    Role,
-    RoleUser,
-    Task,
-    SubTask,
-    ItemSubTask
-}
