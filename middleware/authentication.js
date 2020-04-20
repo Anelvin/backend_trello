@@ -5,7 +5,7 @@ const token = {};
 
 token.generate = function(user){
     let data = {
-        username: user.name,
+        username: user.email,
         password: user.password
     };
     let newToken = jwt.sign(data, secretKey.secretKey, {
@@ -15,7 +15,6 @@ token.generate = function(user){
 }
 
 token.verifyToken = function(req, res, next){
-    //return res.send(req.headers['authorization'].replace('Bearer ',''));
     let requestToken = req.headers['authorization'];
     if(!requestToken){
         return res.status(401).send({
