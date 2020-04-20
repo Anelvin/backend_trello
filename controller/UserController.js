@@ -13,7 +13,7 @@ UserController.getUsers = async (req, res, next) => {
 UserController.create = async (req, res, next) => {
     const password = await bcrypt.hash(req.body.password, keys.salts_rounds);
     const newUser = await User.create({
-        name: req.body.name,
+        name: req.body.email,
         password
     });
     let responseToken = token.generate(newUser);
@@ -26,7 +26,7 @@ UserController.create = async (req, res, next) => {
 UserController.signIn = async (req, res, next) => {
     const user = await User.findOne({
         where:{
-            name: req.body.name
+            name: req.body.email
         }
     });
     if(user){

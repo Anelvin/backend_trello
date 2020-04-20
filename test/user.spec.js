@@ -2,12 +2,12 @@
 
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { getToken } from './auth';
+import { getToken, url } from './auth';
 
 const expect = chai.expect;
 
 chai.use(chaiHttp);
-const url = 'http://localhost:3001';
+
 let token = '';
 
 describe('User', () => {
@@ -42,6 +42,8 @@ describe('User', () => {
             .get('/user')
             .end((error, res) => {
                 expect(res).to.have.status(401);
+                expect(res.body).to.have.property('message');
+                expect(res.body.message).to.equal('Es necesario un token');
                 done();
             });
     });
