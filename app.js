@@ -5,6 +5,7 @@ const app = express();
 //Importing routes
 import userRoutes from './routes/user';
 import roleRoutes from './routes/role';
+import boardRoutes from './routes/board';
 
 //Calling database
 require('./database/sequelize');
@@ -26,6 +27,7 @@ app.use(express.urlencoded({extended:false}));
 //Routes
 app.use('/user', userRoutes);
 app.use('/role', roleRoutes);
+app.use('/board', boardRoutes);
 
 //Starting server
 app.listen(app.get('port'), () => {

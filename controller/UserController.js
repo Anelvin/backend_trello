@@ -34,7 +34,8 @@ UserController.signIn = async (req, res, next) => {
         if(authorized){
             let responseToken = token.generate(user);
             res.status(200).json({
-                token: responseToken
+                token: responseToken,
+                user: user.name
             });
         }
         res.status(401);
