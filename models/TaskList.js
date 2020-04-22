@@ -1,23 +1,14 @@
-module.exports = (sequelize, type) => {
-    const TaskList = sequelize.define('task_list', {
-        id: {
-            type: type.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        name: type.STRING,
-        board_id: {
-            type: type.INTEGER,
-            references:{
-                model: 'boards',
-                key: 'id'
-            }
-        }
-    },{
-        timestamps: true
-    });
-    TaskList.associate = (models) => {
-        TaskList.hasMany(models.task, {onDelete: 'cascade'})
-    }
-    return TaskList;
-}
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const TaskList = sequelize.define('TaskList', {
+    name: DataTypes.STRING,
+    BoardId: DataTypes.INTEGER,
+    description: DataTypes.STRING
+  }, {});
+  TaskList.associate = function(models) {
+    // associations can be defined here
+    TaskList.belongsTo(models.Board);
+    TaskList.hasMany(models.SubTaskList);
+  };
+  return TaskList;
+};
