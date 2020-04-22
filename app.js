@@ -6,6 +6,7 @@ const app = express();
 import userRoutes from './routes/user';
 import roleRoutes from './routes/role';
 import boardRoutes from './routes/board';
+import userBoardRoutes from './routes/userboard';
 
 //Calling database
 
@@ -27,6 +28,7 @@ app.use(express.urlencoded({extended:false}));
 app.use('/user', userRoutes);
 app.use('/role', roleRoutes);
 app.use('/board', boardRoutes);
+app.use('/userboard', userBoardRoutes);
 
 //Starting server
 app.listen(app.get('port'), () => {

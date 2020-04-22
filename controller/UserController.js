@@ -27,7 +27,7 @@ UserController.create = async (req, res, next) => {
 UserController.signIn = async (req, res, next) => {
     const user = await User.findOne({
         where:{
-            name: req.body.email
+            email: req.body.email
         }
     });
     if(user){
@@ -36,7 +36,7 @@ UserController.signIn = async (req, res, next) => {
             let responseToken = token.generate(user);
             res.status(200).json({
                 token: responseToken,
-                user: user.name
+                user:[user.name, user.email]
             });
         }
         res.status(401);
