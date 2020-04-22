@@ -1,4 +1,5 @@
-import { Board, User, RoleUser } from '../database/sequelize';
+
+import { Board, User, Role, UserBoard } from '../models/index';
 
 const BoardController = {}
 
@@ -13,8 +14,18 @@ BoardController.getBoard = async (req, res, next) => {
             id: req.params.id
         }
     });
-
     res.status(200).json(board)
+}
+
+BoardController.getUserBoards = async (req, res, next) => {
+    const boards = await UserBoard.findAll({
+        include: [
+            {model: User, require: true},
+            {model: Role, require: true}
+        ]
+    });
+
+    return res.status(200).json(boards);
 }
 
 BoardController.create = async (req, res, next) => {
@@ -24,18 +35,25 @@ BoardController.create = async (req, res, next) => {
 
     const user = await User.findOne({
         where:{
-            name: req.body.email
+            email: req.body.email
         }
     });
 
-    const roleUser = await RoleUser.create({
-        user_id: user.id,
-        role_id: 1,
-        board_id: newBoard.id
+    const userBoard = await UserBoard.create({
+        UserId: user.id,
+        RoleId: 1,
+        BoardId: newBoard.id
     });
 
+    const boards = await UserBoard.findAll({
+        where: {
+            UserId: user.id
+        }
+    })
+
     res.status(200).json({
-        'message': 'Board created'
+        'message': 'Board created',
+        boards
     });
 }
 

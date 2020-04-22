@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import keys from '../keys/index';
-import { User } from '../database/sequelize';
 import token from '../middleware/authentication';
+import { User } from '../models/index';
 
 const UserController = {}
 
@@ -13,7 +13,8 @@ UserController.getUsers = async (req, res, next) => {
 UserController.create = async (req, res, next) => {
     const password = await bcrypt.hash(req.body.password, keys.salts_rounds);
     const newUser = await User.create({
-        name: req.body.email,
+        name: req.body.name,
+        email: req.body.email,
         password
     });
     let responseToken = token.generate(newUser);

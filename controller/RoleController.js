@@ -1,4 +1,4 @@
-import { Role } from '../database/sequelize';
+import { Role } from '../models/index';
 
 const RoleController = {}
 
@@ -18,13 +18,11 @@ RoleController.getRole = async (req, res, next) => {
 }
 
 RoleController.create = async (req, res, next) => {
-    const newRole = await Role.create({
-        description: req.body.description
-    });
-
-    res.status(201).json({
-        message:'Role created'
-    });
+        Role.create({
+            description: req.body.description
+        }).then(role => {
+            res.status(201).json(role)
+        })
 }
 
 export default RoleController;

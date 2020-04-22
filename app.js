@@ -8,7 +8,6 @@ import roleRoutes from './routes/role';
 import boardRoutes from './routes/board';
 
 //Calling database
-require('./database/sequelize');
 
 //Setting
 app.set('port', process.env.PORT || 3001);
