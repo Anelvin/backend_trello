@@ -46,9 +46,13 @@ BoardController.create = async (req, res, next) => {
     });
 
     const boards = await UserBoard.findAll({
-        where: {
+        where:{
             UserId: user.id
-        }
+        },
+        include:[
+            {model: Role, require: true},
+            {model: Board, require: true}
+        ]
     })
 
     res.status(200).json({
