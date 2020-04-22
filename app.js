@@ -7,6 +7,7 @@ import userRoutes from './routes/user';
 import roleRoutes from './routes/role';
 import boardRoutes from './routes/board';
 import userBoardRoutes from './routes/userboard';
+import taskListRoutes from './routes/TaskList';
 
 //Calling database
 
@@ -29,6 +30,7 @@ app.use('/user', userRoutes);
 app.use('/role', roleRoutes);
 app.use('/board', boardRoutes);
 app.use('/userboard', userBoardRoutes);
+app.use('/tasklist', taskListRoutes);
 
 //Starting server
 app.listen(app.get('port'), () => {
