@@ -19,7 +19,7 @@ UserController.create = async (req, res, next) => {
     });
     let responseToken = token.generate(newUser);
     res.status(201).json({
-        message: 'User created',
+        user: [newUser.name, newUser.email],
         responseToken
     });
 }

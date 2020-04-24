@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('TaskLists', {
+    return queryInterface.createTable('Colors', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,12 +10,6 @@ module.exports = {
       },
       description: {
         type: Sequelize.STRING
-      },
-      BoardId: {
-        type: Sequelize.INTEGER
-      },
-      index: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +22,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('TaskLists');
+    return queryInterface.dropTable('Colors');
   }
 };

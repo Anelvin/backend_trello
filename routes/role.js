@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/', RoleController.getRoles);
 router.get('/:id', RoleController.getRole);
-router.post('/insert', RoleController.create);
+router.post('/create', RoleController.create);
 
 export default router;
