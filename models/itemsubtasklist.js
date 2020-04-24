@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const ItemSubTaskList = sequelize.define('ItemSubTaskList', {
-    name: DataTypes.STRING,
+    description: DataTypes.STRING,
     SubTaskListId: DataTypes.INTEGER,
     complete: DataTypes.BOOLEAN
   }, {});

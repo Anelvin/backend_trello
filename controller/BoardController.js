@@ -29,8 +29,9 @@ BoardController.getUserBoards = async (req, res, next) => {
 }
 
 BoardController.create = async (req, res, next) => {
+    console.log(req.body);
     const newBoard = await Board.create({
-        name: req.body.name
+        description: req.body.description
     });
 
     const user = await User.findOne({
