@@ -12,13 +12,13 @@ TaskListController.create = async (req, res, next) => {
     const taskLists = await TaskList.findAll({
         where: {
             BoardId: req.body.board
-        }
+        },
+        include:[
+            {model: Task, require: true}
+        ]
     });
 
-    res.status(201).json({
-        message: 'TaskList Created',
-        taskLists
-    });
+    res.status(201).json(taskLists);
 }
 
 TaskListController.findByBoard = async (req, res, next) => {
