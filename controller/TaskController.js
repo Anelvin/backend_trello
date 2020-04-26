@@ -29,6 +29,17 @@ TaskController.create = async (req, res, next) => {
 
 TaskController.changeoflist = async (req, res, next) => {
     if(req.body.originId != req.body.destId){
+
+        await Task.update({
+            TaskListId: req.body.destId,
+            index: null
+            },{
+                where: {
+                    index: req.body.originIndex,
+                    TaskListId: req.body.originId
+                }
+            })
+
         const total = await Task.findAll({
             where: {
                 taskListId: req.body.destId,
@@ -37,6 +48,16 @@ TaskController.changeoflist = async (req, res, next) => {
                 }
             }
         });
+
+        await total.sort(function (a, b) {
+            if (a.index > b.index) {
+              return 1;
+            }
+            if (a.index < b.index) {
+              return -1;
+            }
+            return 0;
+          });
     
         for(let i = 0; i < total.length; i++){
             let taskPosition = total[total.length - 1 - i];
@@ -48,14 +69,12 @@ TaskController.changeoflist = async (req, res, next) => {
                 }
             })
         }
-    
+
         await Task.update({
-            TaskListId: req.body.destId,
             index: req.body.destIndex
             },{
                 where: {
-                    index: req.body.originIndex,
-                    TaskListId: req.body.originId
+                    index: null,
                 }
             })
         
@@ -67,6 +86,16 @@ TaskController.changeoflist = async (req, res, next) => {
                     }
                 }
             });
+
+            await total1.sort(function (a, b) {
+                if (a.index > b.index) {
+                  return 1;
+                }
+                if (a.index < b.index) {
+                  return -1;
+                }
+                return 0;
+              });
     
             for(let i = 0; i < total1.length; i++){
                 let taskPosition = total1[i];
