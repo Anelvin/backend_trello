@@ -11,7 +11,7 @@ TaskController.create = async (req, res, next) => {
     })
 
     const task = await Task.create({
-        description: req.body.description,
+        name: req.body.name,
         TaskListId: req.body.tasklist,
         index: max + 1
     });
@@ -27,18 +27,28 @@ TaskController.create = async (req, res, next) => {
     res.status(201).json(taskList);
 }
 
+TaskController.findById = async (req, res, next) => {
+    const task = await Task.findOne({
+        where: {
+            id: req.body.id
+        }
+    });
+
+    res.status(200).json(task);
+}
+
 TaskController.changeoflist = async (req, res, next) => {
     if(req.body.originId != req.body.destId){
 
         await Task.update({
             TaskListId: req.body.destId,
             index: null
-            },{
-                where: {
-                    index: req.body.originIndex,
-                    TaskListId: req.body.originId
-                }
-            })
+        },{
+            where: {
+                index: req.body.originIndex,
+                TaskListId: req.body.originId
+            }
+        });
 
         const total = await Task.findAll({
             where: {
@@ -57,7 +67,7 @@ TaskController.changeoflist = async (req, res, next) => {
               return -1;
             }
             return 0;
-          });
+        });
     
         for(let i = 0; i < total.length; i++){
             let taskPosition = total[total.length - 1 - i];
@@ -72,55 +82,56 @@ TaskController.changeoflist = async (req, res, next) => {
 
         await Task.update({
             index: req.body.destIndex
-            },{
-                where: {
-                    index: null,
-                }
-            })
-        
-            const total1 = await Task.findAll({
-                where: {
-                    taskListId: req.body.originId,
-                    index: {
-                        [Op.gte]: req.body.originIndex
-                    }
-                }
-            });
-
-            await total1.sort(function (a, b) {
-                if (a.index > b.index) {
-                  return 1;
-                }
-                if (a.index < b.index) {
-                  return -1;
-                }
-                return 0;
-              });
-    
-            for(let i = 0; i < total1.length; i++){
-                let taskPosition = total1[i];
-                let oldTask = await Task.update({
-                    index: taskPosition.index - 1
-                },{
-                    where:{
-                        index: taskPosition.index,
-                        TaskListId: taskPosition.TaskListId
-                    }
-                })
+        },{
+            where: {
+                index: null,
             }
+        })
+        
+        const total1 = await Task.findAll({
+            where: {
+                taskListId: req.body.originId,
+                index: {
+                    [Op.gte]: req.body.originIndex
+                }
+            }
+        });
+
+        await total1.sort(function (a, b) {
+            if (a.index > b.index) {
+                return 1;
+            }
+            if (a.index < b.index) {
+                return -1;
+            }
+            return 0;
+        });
     
-            const taskLists = await TaskList.findAll({
+        for(let i = 0; i < total1.length; i++){
+            let taskPosition = total1[i];
+            let oldTask = await Task.update({
+                index: taskPosition.index - 1
+            },{
                 where:{
-                    BoardId: req.body.board
-                },
-                include:[
-                    {model:Task, require:true}
-                ]
+                    index: taskPosition.index,
+                    TaskListId: taskPosition.TaskListId
+                }
             })
+        }
+    
+        const taskLists = await TaskList.findAll({
+            where:{
+                BoardId: req.body.board
+            },
+            include:[
+                {model:Task, require:true}
+            ]
+        })
     
             return res.status(200).send(taskLists);
     }else{
         if(req.body.originIndex > req.body.destIndex){
+
             await Task.update({
                 TaskListId: req.body.destId,
                 index: null
@@ -129,7 +140,8 @@ TaskController.changeoflist = async (req, res, next) => {
                     index: req.body.originIndex,
                     TaskListId: req.body.originId
                 }
-            })
+            });
+
             const total = await Task.findAll({
                 where: {
                     taskListId: req.body.destId,
@@ -143,6 +155,7 @@ TaskController.changeoflist = async (req, res, next) => {
                     } 
                 }
             });
+
             await total.sort(function (a, b) {
                 if (a.index > b.index) {
                   return 1;
@@ -152,35 +165,36 @@ TaskController.changeoflist = async (req, res, next) => {
                 }
                 return 0;
               })
-            //return res.status(200).send(total);
 
-                for(let i = 0; i < total.length; i++){
-                    let taskPosition = total[total.length - 1 - i];
-                    let oldTask = await Task.update({
-                        index: taskPosition.index + 1
-                    },{
-                        where:{
-                            index: taskPosition.index
-                        }
-                    });
+            for(let i = 0; i < total.length; i++){
+                let taskPosition = total[total.length - 1 - i];
+                let oldTask = await Task.update({
+                    index: taskPosition.index + 1
+                },{
+                    where:{
+                        index: taskPosition.index
+                    }
+                });
+            }
+
+            await Task.update({
+                index: req.body.destIndex
+            },{
+                where: {
+                    index: null,
                 }
-                await Task.update({
-                    index: req.body.destIndex
-                    },{
-                        where: {
-                            index: null,
-                        }
-                    })
-                    const taskLists = await TaskList.findAll({
-                        where:{
-                            BoardId: req.body.board
-                        },
-                        include:[
-                            {model:Task, require:true}
-                        ]
-                    })
+            });
+
+            const taskLists = await TaskList.findAll({
+                where:{
+                    BoardId: req.body.board
+                },
+                include:[
+                    {model:Task, require:true}
+                ]
+            });
             
-                    return res.status(200).send(taskLists);
+            return res.status(200).send(taskLists);
         }
 
         if(req.body.originIndex < req.body.destIndex){
@@ -192,7 +206,8 @@ TaskController.changeoflist = async (req, res, next) => {
                     index: req.body.originIndex,
                     TaskListId: req.body.originId
                 }
-            })
+            });
+
             const total = await Task.findAll({
                 where: {
                     taskListId: req.body.destId,
@@ -215,7 +230,7 @@ TaskController.changeoflist = async (req, res, next) => {
                   return -1;
                 }
                 return 0;
-              })
+            });
             
             for(let i = 0; i < total.length; i++){
                 let taskPosition = total[i];
@@ -227,42 +242,27 @@ TaskController.changeoflist = async (req, res, next) => {
                     }
                 });
             }
-                await Task.update({
-                    index: req.body.destIndex
-                    },{
-                        where: {
-                            index: null,
-                        }
-                    })
-                    const taskLists = await TaskList.findAll({
-                        where:{
-                            BoardId: req.body.board
-                        },
-                        include:[
-                            {model:Task, require:true}
-                        ]
-                    })
+
+            await Task.update({
+                index: req.body.destIndex
+            },{
+                where: {
+                    index: null,
+                }
+            });
+
+            const taskLists = await TaskList.findAll({
+                where:{
+                    BoardId: req.body.board
+                },
+                include:[
+                    {model:Task, require:true}
+                ]
+            });
             
-                    return res.status(200).send(taskLists);
+            return res.status(200).send(taskLists);
         }
-
-    
     }
-   /* const task = await Task.findOne({
-        where:{
-            index: req.body.taskIndex
-        }
-    });
-
-    const changeTask =  await Task.create({
-        TaskListId: req.body.destId,
-        description: task.description,
-        index: taskNewIndex
-    });
-*/
-
-
-
 }
 
 export default TaskController;

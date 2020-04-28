@@ -9,6 +9,7 @@ import boardRoutes from './routes/board';
 import userBoardRoutes from './routes/userboard';
 import taskListRoutes from './routes/TaskList';
 import taskRoutes from './routes/task';
+import backgroundRoutes from './routes/background';
 
 //Calling database
 
@@ -33,6 +34,7 @@ app.use('/board', boardRoutes);
 app.use('/userboard', userBoardRoutes);
 app.use('/tasklist', taskListRoutes);
 app.use('/task', taskRoutes);
+app.use('/background', backgroundRoutes);
 
 //Starting server
 app.listen(app.get('port'), () => {
