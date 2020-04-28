@@ -1,24 +1,15 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Tasks', {
+    return queryInterface.createTable('Backgrounds', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      TaskListId: {
-        type: Sequelize.INTEGER
-      },
-      name: {
-        type: Sequelize.STRING
-      },
       description: {
         type: Sequelize.STRING
-      },
-      index: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +22,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Tasks');
+    return queryInterface.dropTable('Backgrounds');
   }
 };

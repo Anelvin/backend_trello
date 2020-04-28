@@ -11,8 +11,8 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      background: {
-        type: Sequelize.STRING
+      BackgroundId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

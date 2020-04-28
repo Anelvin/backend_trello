@@ -17,6 +17,16 @@ BoardController.getBoard = async (req, res, next) => {
     res.status(200).json(board)
 }
 
+BoardController.getBoardById = async (req, res, next) => {
+    const board = await Board.findOne({
+        where: {
+            id: req.body.id
+        }
+    });
+
+    res.status(200).json(board);
+}
+
 BoardController.getUserBoards = async (req, res, next) => {
     const boards = await UserBoard.findAll({
         include: [
